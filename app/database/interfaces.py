@@ -2,18 +2,24 @@
 
 from abc import ABC, abstractmethod
 from collections.abc import AsyncIterator
-from typing import Any
+from types import TracebackType
+from typing import Any, Self
 
 
 class UnitOfWork(ABC):
     """Transaction boundary for repositories."""
 
     @abstractmethod
-    async def __aenter__(self) -> "UnitOfWork":
+    async def __aenter__(self) -> Self:
         """Enter a transaction scope."""
 
     @abstractmethod
-    async def __aexit__(self, exc_type: type[BaseException] | None, exc: BaseException | None, tb: Any) -> None:
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc: BaseException | None,
+        tb: TracebackType | None,
+    ) -> None:
         """Exit a transaction scope, committing or rolling back as appropriate."""
 
 
